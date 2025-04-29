@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ shoe.name }} - Detail{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 detail-container">
+  <h1 class="text-center shoe-title">{{ shoe.name }}</h1>
+
+  <div class="text-center">
+    <img src="{{ shoe.image.url }}" class="img-fluid rounded shadow fixed-image" alt="{{ shoe.name }}">
+  </div>
+  
+  <div class="mt-3 description-area">
+    {{ shoe.description|safe }}
+  </div>
+  
+  <p class="shoe-gender">Gender: {{ shoe.get_gender_display }}</p>
+  <p class="shoe-categories">
+    Categories:
+    {% for category in shoe.categories.all %}
+      <a href="{{ category.get_absolute_url }}" class="badge bg-primary">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+
+  {% if shoe.available and shoe.inventory > 0 %}
+    <div class="mt-3 price-area">
+      {% if shoe.discount_amount %}
+      <p class="text-danger fw-bold">
+          <del>${{ shoe.price }}</del>
+          <span class="text-success ms-2">${{ shoe.discount_amount }}</span>
+        </p>
+      {% else %}
+        <p class="fw-bold">${{ shoe.price }}</p>
+      {% endif %}
+
+    </div>
+
+    <!-- فرم انتخاب رنگ و سایز فقط برای محصول موجود -->
+    <form method="post" action="{% url 'cart:cart_add' shoe.id %}" class="mt-4">
+      {% csrf_token %}
+
+      <div class="mb-3">
+          <label for="id_size" class="form-label">Select Size:</label>
+          {{ selection_form.size }}
+      </div>
+      <div class="mb-3">
+          <label for="id_quantity" class="form-label">Quantity:</label>
+          {{ selection_form.quantity }}
+      </div>
+      <input type="hidden" name="shoe_id" value="{{ shoe.id }}">
+      <button type="submit" class="btn btn-lg galaxy-btn">Add to Cart</button>
+    </form>
+    
+    <h6 class="text-center shoe-title">Available</h6>
+  {% else %}
+    <h6 class="text-center shoe-title">UnAvailable</h6>
+  {% endif %}
+</div>
+
+<style>
+  /* Global background and font */
+
+  /* Container styling */
+  .detail-container {
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    max-width: 900px;
+    margin: auto;
+  }
+
+  /* Title styling */
+  .shoe-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+  }
+
+  /* Fixed image styling */
+  .fixed-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    border-radius: 15px;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  .fixed-image:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #ff4b2b;
+  }
+
+  /* Galaxy button styling */
+  .galaxy-btn {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-weight: 500;
+    border-radius: 50px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .galaxy-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: skewX(-45deg);
+    transition: all 0.5s;
+  }
+  .galaxy-btn:hover::after {
+    left: 100%;
+  }
+  .galaxy-btn:hover {
+    transform: scale(1.05);
+  }
+
+  /* Description, Price, and Info styling */
+  .description-area {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  .price-area p {
+    font-size: 1.5rem;
+  }
+  .shoe-gender, .shoe-categories {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .fixed-image {
+      width: 200px;
+      height: 200px;
+    }
+    .shoe-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+{% endblock %}

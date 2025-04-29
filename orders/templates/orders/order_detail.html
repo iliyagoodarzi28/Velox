@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+
+<div class="order-detail">
+    <h2>Order Details</h2>
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>User:</strong> {{ order.user.username }}</p>
+    <p><strong>Address:</strong> {{ order.address }}</p>
+    <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
+    <p><strong>Email:</strong> {{ order.email }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+    <p><strong>Created At:</strong> {{ order.created_at }}</p>
+    <p><strong>Updated At:</strong> {{ order.updated_at }}</p>
+
+    <h3>Order Items</h3>
+    <ul>
+        {% for item in order_items %}
+            <li>
+                {{ item.quantity }} x {{ item.shoe.name }} at ${{ item.price }} each
+                <br>
+                <strong>Total:</strong> ${{ item.get_total }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}About Shop{% endblock %}
+{% block extra_headers %}
+    <!-- بارگذاری فایل CSS مربوط به About Page -->
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <p>{{ site_info.description }}</p>
+    <p>Phone: {{ site_info.phone }}</p>
+    <p>Email: {{ site_info.email }}</p>
+    <p>Address: {{ site_info.address }}</p>
+    <p>Created at: {{ site_info.created_at|date:"Y-m-d" }}</p>
+    <p>Updated at: {{ site_info.updated_at|date:"Y-m-d" }}
+    <div class="social-links">
+        {% if site_info.x %}
+            <a href="{{ site_info.x }}"><i class="fab fa-x-twitter"></i></a>
+        {% endif %}
+        {% if site_info.telegram %}
+            <a href="{{ site_info.telegram }}"><i class="fab fa-telegram"></i></a>
+        {% endif %}
+        {% if site_info.instagram %}
+            <a href="{{ site_info.instagram }}"><i class="fab fa-instagram"></i></a>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

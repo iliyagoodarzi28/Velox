@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blogs{% endblock %}
+
+{% block extra_headers %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  
+  {% if blogs %}
+    <div class="row">
+        <ul>
+            <div class="filter-form-container">
+                <form method="get" class="filter-form">
+                    {{ form.as_p }}
+                    <button type="submit" class="filter-button">ّFilter</button>
+                </form>
+            </div>
+        </ul>
+      {% for blog in blogs %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            {% if blog.image %}
+              <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.name }}">
+            {% else %}
+              <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="بدون تصویر">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title" >{{ blog.name }}</h5>
+              <p class="card-text">
+                  {{ blog.description|striptags|truncatewords:20 }}
+
+              </p>
+              <a href="{{ blog.get_absolute_url }}" class="btn btn-primary">Read more</a>
+            </div>
+            <div class="color_font_date_view">
+
+            <div class="card-footer d-flex justify-content-between"> 
+              <small class="text-muted">ِDate: {{ blog.date|date:"Y-m-d" }}</small>
+              <small class="text-muted">View: {{ blog.views }}</small>
+            </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+</div>
+  {% else %}
+    <p class="text-center">No blogs available</p>
+  {% endif %}
+</div>
+{% endblock %}

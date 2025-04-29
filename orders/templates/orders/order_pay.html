@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order Payment{% endblock %}
+
+{% block content %}
+<div class="order-payment">
+    <h2>Order Payment</h2>
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>Total Amount:</strong> ${{ order.total_amount }}</p>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+
+    {% if order.status == 'pending' %}
+        <form method="post" action="{% url 'process_payment' order.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Pay Now</button>
+        </form>
+    {% else %}
+        <p>This order has already been {{ order.status }}.</p>
+    {% endif %}
+</div>
+{% endblock %}

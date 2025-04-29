@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+
+{% block extra_headers %}
+{% endblock %}
+
+
+<h2>Blog posts in {{ category.name }}</h2>
+
+<div class="container py-4">
+<div class="row">
+        {% if blogs %}
+            {% for blog in blogs %}
+            
+            <div class="card" style="width: 18rem;">
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.name}}</h5>
+                  <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary">Go</a>
+                </div>
+              </div>
+              {% endfor %}
+        {% endif %}
+            </div>
+        </div>
+
+
+{% endblock %}

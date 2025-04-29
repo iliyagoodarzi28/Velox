@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ blog.name }}{% endblock %}
+{% block extra_headers %}
+  {# اینجا می‌توانید فایل‌های CSS مخصوص رو لود کنید #}
+{% endblock %}
+{% block content %}
+
+<!-- تصویر اصلی بلاگ با کلاس cosmic-img -->
+<img src="{{ blog.image.url }}" class="cosmic-img" alt="{{ blog.name }}">
+<div class="cosmic-header"></div>
+
+<!-- محتوای بلاگ -->
+<div class="cosmic-main">
+    <article class="cosmic-article">
+        <h1 class="cosmic-title">{{ blog.name }}</h1>
+        <hr class="cosmic-divider">
+        <div class="cosmic-meta">
+            <p class="cosmic-desc">
+                {{ blog.description|safe }}
+                {{ form.media }}
+            </p>
+            <time class="cosmic-date">{{ blog.date|date:"Y-m-d" }}</time>
+        </div>
+        <div class="cosmic-body">
+            {{ blog.content|safe }}
+        </div>
+    </article>
+    
+    <!-- بخش نظرات -->
+    <section class="cosmic-comments">
+        <h2 class="cosmic-comments-title">Comments</h2>
+        {% for comment in comments %}
+            <div class="cosmic-comment">
+                <div class="cosmic-comment-header">
+                    <strong class="cosmic-comment-name">{{ comment.name }}</strong>
+                    <time class="cosmic-comment-date">{{ comment.get_persian_created_at }}</time>
+                </div>
+                <p class="cosmic-comment-content">{{ comment.content }}</p>
+                <div class="cosmic-comment-actions">
+                    {% if request.user == comment.user %}
+                        <a href="{% url 'edit_comment' comment.id %}" class="cosmic-btn cosmic-comment-edit-btn">ویرایش</a>
+                        <a href="{% url 'delete_comment' comment.id %}" class="cosmic-btn cosmic-comment-delete-btn">حذف</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p class="cosmic-no-comments">There are no comments.</p>
+        {% endfor %}
+    </section>
+
+    <!-- بخش فرم ارسال نظر و امتیازدهی -->
+    <section class="cosmic-comment-form">
+        <h3>Post a comment</h3>
+        <form method="post" class="cosmic-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="cosmic-btn cosmic-submit-btn">Send</button>
+        </form>
+        <br>
+        <h3>Scoring</h3>
+        {% if user_rating %}
+            <p>You have already rated: {{ user_rating.score }}</p>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                {{ rating_form.as_p }}
+                <button type="submit" name="rating" class="cosmic-btn">Send score</button>
+            </form>
+        {% endif %}
+        <h3>Average score: {{ average_rating|floatformat:1 }}</h3>
+    </section>
+</div>
+
+{% endblock %}

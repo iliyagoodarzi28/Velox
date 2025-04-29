@@ -1,0 +1,49 @@
+<br>
+<br>
+<br>
+
+<footer class="galactic-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="fw-bold">🚀 Contact Us</h5>
+                <ul class="list-unstyled">
+                    {% if site_info.phone %}
+                        <li><i class="fas fa-phone-alt neon-text"></i> {{ site_info.phone }}</li>
+                    {% endif %}
+                    {% if site_info.email %}
+                        <li>
+                            <i class="fas fa-envelope neon-text"></i>
+                            <a href="mailto:{{ site_info.email }}" class="text-warning hover-effect">{{ site_info.email }}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold">🌠 Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'home' %}" class="text-white hover-effect">Home</a></li>
+                    <li><a href="{% url 'about' %}" class="text-white hover-effect">About</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold">🌌 Follow Us</h5>
+                <div class="d-flex">
+                    {% if site_info.x %}
+                        <a href="{{ site_info.x }}" class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                    {% endif %}
+                    {% if site_info.telegram %}
+                        <a href="{{ site_info.telegram }}" class="social-icon"><i class="fab fa-telegram"></i></a>
+                    {% endif %}
+                    {% if site_info.instagram %}
+                        <a href="{{ site_info.instagram }}" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr class="glowing-line">
+        <div class="text-center">
+            <p class="mb-0 neon-text">&copy;{{ site_info.created_at|date:"Y-m-d" }}- All Rights Reserved</p>
+        </div>
+    </div>
+</footer>

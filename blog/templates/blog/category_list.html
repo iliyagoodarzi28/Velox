@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Categories{% endblock %}
+
+{% block extra_headers %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center my-4">Categories Blog</h1>
+  <div class="circle-container">
+    {% for category in categories %}
+      <a class="category-circle" href="{% url 'blog_category_detail' category.slug %}">
+        {% if category.image %}
+          <img src="{{ category.image.url }}" alt="{{ category.name }}">
+        {% else %}
+          <img src="{% static 'images/default-cat.png' %}" alt="{{ category.name }}">
+        {% endif %}
+        <div class="category-name">{{ category.name }}</div>
+      </a>
+      
+    {% empty %}
+      <p>No categories available.</p>
+    {% endfor %}
+  </div>
+  <br><br>
+  <br><br>
+  <br><br>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Signup{% endblock %}
+
+{% block extra_headers %}
+
+
+{% endblock %}
+
+{% block content %}
+<div class="star-field"></div>
+<div class="registration-container">
+    <h2>Registration Form</h2>
+    {% if messages %}
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Signup</button>
+    </form>
+    <p>Have you already registered? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}
